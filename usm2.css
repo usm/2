@@ -7,3 +7,11 @@ body {
 h2 {
     color:maroon
 }
+
+a {
+    color:blue
+}
+
+a:hover {
+    background-color:yellow;
+}

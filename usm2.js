@@ -2,10 +2,7 @@ console.log('usm2.js loaded')
 
 usm=function(seq='acggctagagctag',abc=usm.unique(seq)){
     console.log('usm fun')
-    // raw sequence
     this.seq=seq
-    // unique alphabet
-    // this.abc=abc
     this.edges=usm.edges(abc)
     usm.iterate(this)
 }
@@ -46,6 +43,7 @@ usm.iterate=(u)=>{
     u.backward=[]
     const n=u.seq.length
     u.edges[Object.keys(u.edges)[0]].forEach((_,d)=>{ // for each dimension
+        console.log(`iterating ${d} dimension`)
         u.forward[d]=usm.rep(0.5,n)
         u.backward[d]=usm.rep(0.5,n)
         let funForward = function(m=n){
@@ -62,36 +60,17 @@ usm.iterate=(u)=>{
         }
         funForward()
         funBackward()
+        // close seeding circularity
         funForward( n>100 ? 100 : n )
         for(let k=0 ; k < 100/n ; k++){
+            console.log(`short sequence, looping ${k}`)
             funBackward()
             funForward()
         }
-
-
-
-        
-        /*
-        // seed forward with backward tail
-        u.forward[d][0]=u.backward[d][0]+(u.edges[u.seq[0]][d]-u.backward[d][0])/2
-        for(let i=1 ; i<n ; i++){
-            u.forward[d][i]=u.forward[d][i-1]+(u.edges[u.seq[i]][d]-u.forward[d][i-1])/2
-        }
-        // backward seeded with forward tail
-        u.backward[d][n-1]=u.forward[d][n-1]+(u.edges[u.seq[n-1]][d]-u.forward[d][n-1])/2
-        for(let i=n-2 ; i>=0 ; i--){
-            u.backward[d][i]=u.backward[d][i+1]+(u.edges[u.seq[i]][d]-u.backward[d][i+1])/2
-        }
-        */
-        //debugger
     })
-
-
-    //debugger
     return u
 }
 
+// --------------------//
 
-
-
-usm()
+u = new usm()
