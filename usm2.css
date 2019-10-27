@@ -1,7 +1,10 @@
 body {
     color:navy;
     background-color:silver;
-    font-family:sans-serif
+    font-family:sans-serif;
+    border-style:solid;
+    border-color:silver;
+    border-width:10
 }
 
 h2 {
