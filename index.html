@@ -1,9 +1,57 @@
 <link href="usm2.css" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.1/build/pure-min.css" integrity="sha384-oAOxQR6DkCoMliIh8yFnu25d7Eq/PHS21PClpwjOTeU2jRSq11vu66rf90/cZr47" crossorigin="anonymous">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="favicon.ico" />
 <script src="usm2.js"></script>
 
 
 <h2>USM2 <span style="font-size:small">[<a href="https://github.com/usm/2" target="_blank">code</a>]</span></h2>
 Version 2 of <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4017330/" target="_blank">Universal Sequence Maps</a> (USM), to support work on folding alignment and make the most of ES6 to support client and server side computing with the same codebase.
+<hr>
+<ol>
+<li>
+    <h3>Load sequence <button style="color:green;font-size:small" id="demo">demo</button></h3
+    <p>From url <input id="urlSequence" style="color:blue"><button>Load</button></p>
+    <p>Local <input id="localFile" type="file"></p>
+    <p>Type/Paste<br>
+    <textarea id='textSequence' style="width:100%;height:300;font-size:x-small;color:blue"></textarea></p>
+</li>
+<li>
+    <h3>Calculate USM coordinates <button style="color:gray" disabled=true id="usmPlay">&#9658;</button></h3>
+    <table table>
 
+    </table>
+</li>
+</ol>
+
+<script>
+    function enablePlay(){
+        if(textSequence.value.length>0){
+            usmPlay.disabled=false
+            usmPlay.style.color='blue'
+            usmPlay.style.backgroundColor='yellow'
+        }
+    }
+
+
+    textSequence.onkeyup=function(){
+        enablePlay()
+    }
+
+    demo.onclick=_=>{
+        location.search='https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=399923581&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&retmode=html&withmarkup=on&tool=portal&log$=seqview'
+    }
+
+    if(location.search.length>1){
+        urlSequence.value=location.search.slice(1)
+        textSequence.value=`\nreading sequence data from \n\n ${urlSequence.value} ... \n\n... please wait...`
+        fetch(urlSequence.value).then(s=>{
+            s.text().then(txt=>{
+                textSequence.value=txt.slice(0,3000)+` ... (length ${txt.length})`
+            })
+            //debugger
+        })
+        //debugger
+    }
+
+</script>

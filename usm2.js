@@ -43,7 +43,7 @@ usm.iterate=(u)=>{
     u.backward=[]
     const n=u.seq.length
     u.edges[Object.keys(u.edges)[0]].forEach((_,d)=>{ // for each dimension
-        console.log(`iterating ${d} dimension`)
+        console.log(`iterating dimension ${d}`)
         u.forward[d]=usm.rep(0.5,n)
         u.backward[d]=usm.rep(0.5,n)
         let funForward = function(m=n){
@@ -62,8 +62,10 @@ usm.iterate=(u)=>{
         funBackward()
         // close seeding circularity
         funForward( n>100 ? 100 : n )
+        const L = Math.floor(100/n)
+        if(L>0&d==0){console.log(`short sequence, looped ${L} times`)}
         for(let k=0 ; k < 100/n ; k++){
-            console.log(`short sequence, looping ${k}`)
+            //console.log(`short sequence, looping ${k}`)
             funBackward()
             funForward()
         }
