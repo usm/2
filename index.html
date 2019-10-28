@@ -42,6 +42,16 @@ Version 2 of <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4017330/" tar
         location.search='https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=399923581&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&retmode=html&withmarkup=on&tool=portal&log$=seqview'
     }
 
+    localFile.onchange=function(){
+        const file = this.files[0]
+        var reader = new FileReader()
+        reader.onload=function(res){
+            const txt=res.target.result
+            textSequence.value=txt.slice(0,3000)+` ... (length ${txt.length})`
+        }
+        reader.readAsText(file)
+    }
+
     if(location.search.length>1){
         urlSequence.value=location.search.slice(1)
         textSequence.value=`\nreading sequence data from \n\n ${urlSequence.value} ... \n\n... please wait...`
