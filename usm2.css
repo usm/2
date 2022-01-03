@@ -1,19 +1,23 @@
 :root {
-  --main-bg-color: silver;
+    --color:navy;
+    --family:Verdana;
 }
 
-
 body {
-    color:navy;
-    background-color:var(--main-bg-color);
-    font-family:sans-serif;
-    border-style:solid;
-    border-color:var(--main-bg-color);
-    border-width:10
+    font-family:var(--family);
+    color:var(--color)
+}
+
+h1 {
+    color:maroon
 }
 
 h2 {
-    color:maroon
+    color:brown
+}
+
+h3 {
+    color:darkgreen
 }
 
 a {
@@ -21,9 +25,28 @@ a {
 }
 
 a:hover {
+    color:green;
     background-color:yellow;
 }
 
-input, button,textarea {
-    background-color:var(--main-bg-color);
+.link:hover {
+    background-color:yellow;
+    cursor:pointer;
+}
+
+p {
+  margin-bottom: 1em;
+  line-height: 1.4em;
+}
+
+code {
+  color:darkgreen;
+  background-color:#f1dfdf;
+  font-family:var(--family);
+}
+
+button {
+  border-radius: 10px;
+  font-size:medium;
+  color:blue;
 }
