@@ -1,7 +1,7 @@
 console.log('usm2.js loaded')
 
 usm=function(seq='acggctagagctag',abc=usm.unique(seq)){
-    console.log('usm fun')
+    //console.log('usm fun')
     this.seq=seq
     this.edges=usm.edges(abc)
     usm.iterate(this)
@@ -75,4 +75,21 @@ usm.iterate=(u)=>{
 
 // --------------------//
 
-u = new usm()
+//u = new usm()
+
+if(typeof (define) != 'undefined'){
+    define(_=>usm)
+}
+
+
+
+/*
+
+if('noModule' in HTMLScriptElement.prototype){
+    if(typeof(define)!='undefined'){
+        define(usm)
+    }
+}else{
+    export {usm}
+}
+*/
