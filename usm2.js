@@ -1,13 +1,30 @@
 console.log('usm2.js loaded')
 
-usm=function(seq='acggctagagctag',abc=usm.unique(seq)){
-    //console.log('usm fun')
-    this.seq=seq
+usm = function(seq='acggctagagctag',abc){
+    if(typeof(seq)=='object'){
+        Object.assign(this,seq)
+    }else{
+        this.seq=seq
+    }
+    abc=abc||usm.unique(this.seq)
     this.edges=usm.edges(abc)
     usm.iterate(this)
-    this.plot=function(that=this,size=200){
+    this.plot=function(size=200,that=this){
         return usm.plot(that,size)
     }
+}
+
+usm.resolveSeq=async function(seq){
+    let res={seq:seq}
+    if(seq.match(/^http[s]*:\/\//)){ // if it is a url
+        res.url=seq
+        res.seq = await (await fetch(seq)).text()
+    }
+    if(res.seq.match(/^>[^\n\r]*/)){ // if fastA
+        res.name = res.seq.match(/^>[^\n\r]*/)[0]
+        res.seq=res.seq.replace(/^>[^\n\r]*/,'').replace(/[\n\r]/g,'')
+    }
+    return res
 }
 
 usm.unique=seq=>[...new Set(seq)]
