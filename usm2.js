@@ -9,8 +9,8 @@ usm = function(seq='acggctagagctag',abc){
     abc=abc||usm.unique(this.seq)
     this.edges=usm.edges(abc)
     usm.iterate(this)
-    this.plot=function(size=200,that=this){
-        return usm.plot(that,size)
+    this.plot=function(size=200,direction="forward",that=this,){
+        return usm.plot(that,size,direction)
     }
 }
 
