@@ -5,6 +5,9 @@ usm=function(seq='acggctagagctag',abc=usm.unique(seq)){
     this.seq=seq
     this.edges=usm.edges(abc)
     usm.iterate(this)
+    this.plot=function(that=this,size=200){
+        return usm.plot(that,size)
+    }
 }
 
 usm.unique=seq=>[...new Set(seq)]
@@ -73,6 +76,23 @@ usm.iterate=(u)=>{
     return u
 }
 
+usm.plot=function(u,size=200,direction="forward"){
+    let cv = document.createElement('canvas')
+    cv.width=cv.height=size
+    cv.style.border="1px solid black"
+    let ctx = cv.getContext('2d')
+    ctx.fillStyle = 'rgb(255, 255, 255)'
+    ctx.fillRect(0,0,size,size) // white background
+    ctx.fillStyle = 'rgb(0, 0, 0)' // black map points
+    let xy=u[direction]
+    xy[0].forEach((_,i)=>{
+        ctx.fillRect(Math.floor(xy[0][i]*size), Math.floor(xy[1][i]*size), 1, 1);
+        //debugger
+    })
+    //debugger
+    return cv
+}
+
 // --------------------//
 
 //u = new usm()
@@ -80,16 +100,3 @@ usm.iterate=(u)=>{
 if(typeof (define) != 'undefined'){
     define(_=>usm)
 }
-
-
-
-/*
-
-if('noModule' in HTMLScriptElement.prototype){
-    if(typeof(define)!='undefined'){
-        define(usm)
-    }
-}else{
-    export {usm}
-}
-*/
