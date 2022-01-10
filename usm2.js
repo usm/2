@@ -15,6 +15,9 @@ usm = function(seq='acggctagagctag',abc){
     this.plot=function(size=200,direction="forward",that=this,){
         return usm.plot(that,size,direction)
     }
+    this.plotSVG=function(size=200,direction="forward",that=this,){
+        return usm.plotSVG(that,size,direction)
+    }
 }
 
 usm.resolveSeq=async function(seq){
@@ -111,6 +114,46 @@ usm.plot=function(u,size=200,direction="forward"){
     })
     //debugger
     return cv
+}
+
+usm.plotSVG=function(u,size=200,direction="forward"){
+    let sg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    sg.setAttribute('width',size)
+    sg.setAttribute('height',size)
+    function circle(x=20,y=20,r=10,c="navy",w=1,fill="yellow",opacity=0){
+        let cc = document.createElementNS('http://www.w3.org/2000/svg','circle')
+        cc.setAttribute("cx",x)
+        cc.setAttribute("cy",y)
+        cc.setAttribute("r",r)
+        cc.setAttribute("stroke",c)
+        cc.setAttribute("stroke-width",w)
+        cc.setAttribute("fill",fill)
+        cc.setAttribute("fill-opacity",opacity)
+        sg.appendChild(cc)
+    }
+    //circle()    
+    let xy=u[direction]
+    xy[0].forEach((_,i)=>{
+        //ctx.fillRect(Math.floor(xy[0][i]*size), Math.floor(xy[1][i]*size), 1, 1);
+        circle(Math.floor(xy[0][i]*size), Math.floor(xy[1][i]*size),5)
+        //debugger
+    })
+    //<circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
+    /*
+    cv.style.border="1px solid black"
+    let ctx = cv.getContext('2d')
+    ctx.fillStyle = 'rgb(255, 255, 255)'
+    ctx.fillRect(0,0,size,size) // white background
+    ctx.fillStyle = 'rgb(0, 0, 0)' // black map points
+    let xy=u[direction]
+    xy[0].forEach((_,i)=>{
+        ctx.fillRect(Math.floor(xy[0][i]*size), Math.floor(xy[1][i]*size), 1, 1);
+        //debugger
+    })
+    //debugger
+    return cv
+    */
+    return sg
 }
 
 // --------------------//
