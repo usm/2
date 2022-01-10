@@ -12,8 +12,8 @@ usm = function(seq='acggctagagctag',abc){
     abc=abc||usm.unique(this.seq).sort() // note sort if undefined
     this.edges=usm.edges(abc)
     usm.iterate(this)
-    this.plot=function(size=200,direction="forward",that=this,){
-        return usm.plot(that,size,direction)
+    this.canvas=function(size=200,direction="forward",that=this,){
+        return usm.canvas(that,size,direction)
     }
     this.plotSVG=function(size=200,direction="forward",that=this,){
         return usm.plotSVG(that,size,direction)
@@ -99,7 +99,7 @@ usm.iterate=(u)=>{
     return u
 }
 
-usm.plot=function(u,size=200,direction="forward"){
+usm.canvas=function(u,size=200,direction="forward"){
     let cv = document.createElement('canvas')
     cv.width=cv.height=size
     cv.style.border="1px solid black"
@@ -131,7 +131,9 @@ usm.plotSVG=function(u,size=200,direction="forward"){
         cc.setAttribute("fill-opacity",opacity)
         sg.appendChild(cc)
     }
-    //circle()    
+    //circle()
+    // add svg
+      
     let xy=u[direction]
     xy[0].forEach((_,i)=>{
         //ctx.fillRect(Math.floor(xy[0][i]*size), Math.floor(xy[1][i]*size), 1, 1);
