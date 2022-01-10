@@ -117,9 +117,10 @@ usm.canvas=function(u,size=200,direction="forward"){
 }
 
 usm.plotSVG=function(u,size=200,direction="forward"){
+    let spc = 15 // marginal space
     let sg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    sg.setAttribute('width',size)
-    sg.setAttribute('height',size)
+    sg.setAttribute('width',size+2*spc+2)
+    sg.setAttribute('height',size+2*spc+2)
     function circle(x=20,y=20,r=10,c="navy",w=1,fill="yellow",opacity=0){
         let cc = document.createElementNS('http://www.w3.org/2000/svg','circle')
         cc.setAttribute("cx",x)
@@ -132,29 +133,52 @@ usm.plotSVG=function(u,size=200,direction="forward"){
         sg.appendChild(cc)
     }
     //circle()
-    // add svg
-      
-    let xy=u[direction]
-    xy[0].forEach((_,i)=>{
-        //ctx.fillRect(Math.floor(xy[0][i]*size), Math.floor(xy[1][i]*size), 1, 1);
-        circle(Math.floor(xy[0][i]*size), Math.floor(xy[1][i]*size),5)
-        //debugger
-    })
-    //<circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
-    /*
-    cv.style.border="1px solid black"
-    let ctx = cv.getContext('2d')
-    ctx.fillStyle = 'rgb(255, 255, 255)'
-    ctx.fillRect(0,0,size,size) // white background
-    ctx.fillStyle = 'rgb(0, 0, 0)' // black map points
-    let xy=u[direction]
-    xy[0].forEach((_,i)=>{
-        ctx.fillRect(Math.floor(xy[0][i]*size), Math.floor(xy[1][i]*size), 1, 1);
+    // add canvas
+    let fobj = document.createElementNS('http://www.w3.org/2000/svg','foreignObject')
+    fobj.setAttribute("x",spc-1)
+    fobj.setAttribute("y",spc-1)
+    fobj.setAttribute("width",size+2)
+    fobj.setAttribute("height",size+2)
+
+    sg.appendChild(fobj)
+    let cv = u.canvas()
+    fobj.appendChild(cv)
+    // edge labels
+    Object.keys(u.edges).forEach((edj,i)=>{
+        let txt = document.createElementNS('http://www.w3.org/2000/svg','text')
+        let x = u.edges[edj][0] //(u.edges[edj][0])*(size+spc+1)+10
+        let y = u.edges[edj][1]//(u.edges[edj][1])*(size+spc+1)+10
+        if(x*y){
+            x=size+spc+2;
+            y=size+spc*2;
+        } else {
+            if(x){
+                x=size+spc+2
+                y=spc-2
+            }else if(y){
+                x=2
+                y=size+spc*2-2
+            }else{
+                x=2
+                y=spc
+            }
+        }
+        txt.setAttribute("x",x)
+        txt.setAttribute("y",y)
+        txt.textContent=edj
+        txt.style.alignContent='left'
+        //txt.style.verticalAlign="top"
+        sg.appendChild(txt)
         //debugger
     })
     //debugger
-    return cv
-    */
+
+    ///*
+    let xy=u[direction]
+    xy[0].forEach((_,i)=>{
+        circle(Math.floor(xy[0][i]*size+spc+1), Math.floor(xy[1][i]*size+spc+1),5)
+    })
+    //*/
     return sg
 }
 
