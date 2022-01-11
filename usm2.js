@@ -9,7 +9,7 @@ usm = function(seq='acggctagagctag',abc){
     if(typeof(abc)=="string"){
         abc=abc.split('')
     }
-    abc=abc||usm.unique(this.seq).sort() // note sort if undefined
+    //abc=abc||usm.unique(this.seq).sort() // note sort if undefined
     this.edges=usm.edges(abc)
     usm.iterate(this)
     this.canvas=function(size=200,direction="forward",that=this,){
