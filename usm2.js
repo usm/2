@@ -58,6 +58,7 @@ usm.edges=ab=>{ // calculate compact edges of an alphabet
     const n = Math.ceil(Math.log2(ab.length)) // dimensions needed for compact notation
     //const m = ab.length // alphabet length
     const edges={}
+    ab = ab.slice(0,2).reverse().concat(ab.slice(2)) // classical CGR plot
     ab.forEach((a,i)=>{
         edges[a]=usm.int2bin(i,n)
         if(edges[a].length==0){
