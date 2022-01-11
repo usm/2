@@ -165,7 +165,7 @@ usm.plotCanvas=function(u,size=200,direction="forward"){
 usm.plotPoints=function(u,size=200,direction="forward"){
     let sg = u.plotCanvas(size,direction)
     let spc = 15 // marginal space
-    function circle(x=20,y=20,r=10,c="navy",w=1,fill="yellow",opacity=0){
+    function circle(x=20,y=20,r=10,c="navy",w=1,fill="yellow",opacity=0.5){
         let cc = document.createElementNS('http://www.w3.org/2000/svg','circle')
         cc.setAttribute("cx",x)
         cc.setAttribute("cy",y)
@@ -179,11 +179,22 @@ usm.plotPoints=function(u,size=200,direction="forward"){
     let xy=u[direction]
     xy[0].forEach((_,i)=>{
         circle(Math.floor(xy[0][i]*size+spc+1), Math.floor(xy[1][i]*size+spc+1),5)
+        if(i>0){ //link points
+        let ln = document.createElementNS('http://www.w3.org/2000/svg','line')
+        ln.setAttribute("x1",Math.floor(xy[0][i-1]*size+spc+1))
+        ln.setAttribute("y1",Math.floor(xy[1][i-1]*size+spc+1))
+        ln.setAttribute("x2",Math.floor(xy[0][i]*size+spc+1))
+        ln.setAttribute("y2",Math.floor(xy[1][i]*size+spc+1))
+        ln.setAttribute("stroke","silver")
+        sg.appendChild(ln)
+            // <line x1="0" y1="80" x2="100" y2="20" stroke="black" />
+        }
     })
     //*/
     return sg
 }
 
+/*
 usm.plotPoints_=function(u,size=200,direction="forward"){
     let spc = 15 // marginal space
     let sg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -239,16 +250,14 @@ usm.plotPoints_=function(u,size=200,direction="forward"){
         sg.appendChild(txt)
         //debugger
     })
-    //debugger
 
-    ///*
     let xy=u[direction]
     xy[0].forEach((_,i)=>{
         circle(Math.floor(xy[0][i]*size+spc+1), Math.floor(xy[1][i]*size+spc+1),5)
     })
-    //*/
     return sg
 }
+*/
 
 // --------------------//
 
