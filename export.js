@@ -8,8 +8,8 @@ async function loadScript(url) {
     return load
 };
 
-await loadScript("http://localhost:8000/usm2/usm2.js");
-//await loadScript("https://usm.github.io/2/usm2.js");
+//await loadScript("http://localhost:8000/usm2/usm2.js");
+await loadScript("https://usm.github.io/2/usm2.js");
 
 
 
