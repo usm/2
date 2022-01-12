@@ -24,10 +24,11 @@ Version 2 of <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4017330/" tar
     <p>From url <input id="urlSequence" style="color:blue" size=50><button>Load</button></p>
     <p>Local <input id="localFile" type="file"></p>
     <p>Type/Paste<br>
-    <textarea id='textSequence' style="width:100%;height:200;font-size:x-small;color:blue"></textarea></p>
+    <textarea id='textSequence' style="width:100%;height:200;font-size:x-small;color:blue"></textarea>
+    <br><span id=txtName style="font-size:x-small;color:blue;background-color:lightgreen"></span></p>
 </li>
 <li>
-    <h3>USM coordinates <button style="color:gray" disabled=true id="usmPlay">&#9658;</button></h3>
+    <h3>Iterated USM map <button style="color:gray" disabled=true id="usmPlay">&#9658;</button></h3>
     <table>
 
     </table>
@@ -36,21 +37,42 @@ Version 2 of <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4017330/" tar
 </body>
 
 <script>
+
+    /*
     function enablePlay(){
         if(textSequence.value.length>0){
             usmPlay.disabled=false
             usmPlay.style.color='blue'
             usmPlay.style.backgroundColor='yellow'
+            usmPlay.onclick=function(){
+                console.log('usmPlay',Date())
+            }
         }
     }
+    */
 
 
     textSequence.onkeyup=function(){
-        enablePlay()
+        //enablePlay()
     }
 
     demo.onclick=_=>{
         location.search='https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=399923581&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&retmode=html&withmarkup=on&tool=portal&log$=seqview'
+    }
+
+    fullSequence=''
+
+    showSeq = function(txt){
+        usm.resolveSeq(txt).then(txt=>{
+            fullSequence=txt.seq
+            if(fullSequence.length>3000){
+                textSequence.value=fullSequence.slice(0,3000)+` ... (length ${fullSequence.length})`
+            }else{
+                textSequence.value=fullSequence
+            }
+            txtName.textContent=txt.name
+            textSequence.onkeyup()
+        })        
     }
 
     localFile.onchange=function(){
@@ -58,7 +80,7 @@ Version 2 of <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4017330/" tar
         var reader = new FileReader()
         reader.onload=function(res){
             const txt=res.target.result
-            textSequence.value=txt.slice(0,3000)+` ... (length ${txt.length})`
+            showSeq(txt)
         }
         reader.readAsText(file)
     }
@@ -68,11 +90,9 @@ Version 2 of <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4017330/" tar
         textSequence.value=`\nreading sequence data from \n\n ${urlSequence.value} ... \n\n... please wait...`
         fetch(urlSequence.value).then(s=>{
             s.text().then(txt=>{
-                textSequence.value=txt.slice(0,3000)+` ... (length ${txt.length})`
+                showSeq(txt)
             })
-            //debugger
         })
-        //debugger
     }
 
 </script>
