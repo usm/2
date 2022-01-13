@@ -38,19 +38,6 @@ Version 2 of <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4017330/" tar
 
 <script>
 
-    /*
-    function enablePlay(){
-        if(textSequence.value.length>0){
-            usmPlay.disabled=false
-            usmPlay.style.color='blue'
-            usmPlay.style.backgroundColor='yellow'
-            usmPlay.onclick=function(){
-                console.log('usmPlay',Date())
-            }
-        }
-    }
-    */
-
     fullSequence=''
     u={}
     
@@ -69,7 +56,7 @@ Version 2 of <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4017330/" tar
          // the instance of usm
         plotDiv.innerHTML=''
         let direction = getDirection()
-        console.log(direction)
+        //console.log(direction)
         plotDiv.appendChild(u.plot(size,direction,window.innerWidth))
     }
 
