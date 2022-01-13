@@ -28,10 +28,10 @@ Version 2 of <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4017330/" tar
     <br><span id=txtName style="font-size:x-small;color:blue;background-color:lightgreen"></span></p>
 </li>
 <li>
-    <h3>Iterated USM map <button style="color:gray" disabled=true id="usmPlay">&#9658;</button></h3>
-    <table>
-
-    </table>
+    <h3>Iterated USM map<!--<button style="color:gray" disabled=true id="usmPlay">&#9658;</button>--></h3>
+    <input type="radio" name="direction" value="forward" checked onclick="plot()"> Forward <input type="radio" name="direction" value="backward" onclick="plot()"> Backward
+    <div id = "plotDiv">
+    </div>
 </li>
 </ol>
 </body>
@@ -51,16 +51,39 @@ Version 2 of <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4017330/" tar
     }
     */
 
-
+    fullSequence=''
+    u={}
+    
     textSequence.onkeyup=function(){
+        console.log(`USM @ ${Date()}`)
+        fullSequence=textSequence.value=textSequence.value.replace(/ ... \(length [0-9]+\)/,'')
+        txtName.innerHTML=''
+        plot()
         //enablePlay()
+    }
+
+    plot = function(size=window.innerWidth-180){
+        if(u.seq!=fullSequence){
+            u = new usm(fullSequence)    
+        }
+         // the instance of usm
+        plotDiv.innerHTML=''
+        let direction = getDirection()
+        console.log(direction)
+        plotDiv.appendChild(u.plot(size,direction,window.innerWidth))
+    }
+
+    getDirection=function(){
+        return [...document.getElementsByName("direction")].filter(rd=>rd.checked)[0].value
+    }
+
+    window.onresize=function(){
+        plot()
     }
 
     demo.onclick=_=>{
         location.search='https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=399923581&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&retmode=html&withmarkup=on&tool=portal&log$=seqview'
     }
-
-    fullSequence=''
 
     showSeq = function(txt){
         usm.resolveSeq(txt).then(txt=>{
@@ -71,7 +94,8 @@ Version 2 of <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4017330/" tar
                 textSequence.value=fullSequence
             }
             txtName.textContent=txt.name
-            textSequence.onkeyup()
+            plot()
+            //textSequence.onkeyup()
         })        
     }
 

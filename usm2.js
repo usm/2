@@ -21,6 +21,13 @@ usm = function(seq='acggctagagctag',abc){
     this.plotPoints=function(size=200,direction="forward",that=this,){
         return usm.plotPoints(that,size,direction)
     }
+    this.plot=function(size=200,direction="forward",cutoff=1000,that=this){
+        if(that.seq.length<cutoff){ // vectorized sequences for smaller sequences
+            return usm.plotPoints(that,size,direction)
+        }else{
+            return usm.plotCanvas(that,size,direction)
+        }      
+    }
 }
 
 usm.resolveSeq=async function(seq){
