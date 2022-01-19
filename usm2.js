@@ -141,6 +141,7 @@ usm.fcgr=function(u,size=2**4,direction="forward"){
 }
 
 usm.canvasGray=function(u,size=200,direction="forward"){
+    size=Math.round(size) // just in case
     let cv = document.createElement('canvas')
     cv.width=cv.height=size
     cv.style.border="1px solid black"
@@ -165,6 +166,7 @@ usm.canvasGray=function(u,size=200,direction="forward"){
 
 
 usm.canvasColor=function(u,size=200,direction="forward"){
+    size=Math.round(size) // just in case
     let cv = document.createElement('canvas')
     cv.width=cv.height=size
     cv.style.border="1px solid black"
@@ -189,6 +191,7 @@ usm.canvasColor=function(u,size=200,direction="forward"){
 
 
 usm.plotCanvas=function(u,size=200,direction="forward"){
+    size=Math.round(size) // just in case
     let spc = 15 // marginal space
     let sg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
     sg.setAttribute('width',size+2*spc+2)
@@ -232,6 +235,7 @@ usm.plotCanvas=function(u,size=200,direction="forward"){
 }
 
 usm.plotPoints=function(u,size=200,direction="forward"){
+    size=Math.round(size) // just in case
     let sg = u.plotCanvas(size,direction)
     let spc = 15 // marginal space
     function circle(x=20,y=20,r=10,c="navy",w=1,fill="yellow",opacity=0.5){
