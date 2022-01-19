@@ -247,16 +247,18 @@ usm.plotPoints=function(u,size=200,direction="forward"){
     }
     let xy=u[direction]
     xy[0].forEach((_,i)=>{
-        circle(Math.floor(xy[0][i]*size+spc+1), Math.floor(xy[1][i]*size+spc+1),5)
         if(i>0){ //link points
-        let ln = document.createElementNS('http://www.w3.org/2000/svg','line')
-        ln.setAttribute("x1",Math.floor(xy[0][i-1]*size+spc+1))
-        ln.setAttribute("y1",Math.floor(xy[1][i-1]*size+spc+1))
-        ln.setAttribute("x2",Math.floor(xy[0][i]*size+spc+1))
-        ln.setAttribute("y2",Math.floor(xy[1][i]*size+spc+1))
-        ln.setAttribute("stroke","silver")
-        sg.appendChild(ln)
+            circle(Math.floor(xy[0][i]*size+spc+1), Math.floor(xy[1][i]*size+spc+1),5)
+            let ln = document.createElementNS('http://www.w3.org/2000/svg','line')
+            ln.setAttribute("x1",Math.floor(xy[0][i-1]*size+spc+1))
+            ln.setAttribute("y1",Math.floor(xy[1][i-1]*size+spc+1))
+            ln.setAttribute("x2",Math.floor(xy[0][i]*size+spc+1))
+            ln.setAttribute("y2",Math.floor(xy[1][i]*size+spc+1))
+            ln.setAttribute("stroke","silver")
+            sg.appendChild(ln)
             // <line x1="0" y1="80" x2="100" y2="20" stroke="black" />
+        }else{
+            circle(Math.floor(xy[0][i]*size+spc+1), Math.floor(xy[1][i]*size+spc+1),5,"maroon",1,"blue")
         }
     })
     //*/
