@@ -15,6 +15,9 @@ usm = function(seq='acggctagagctag',abc){
     this.canvas=function(size=200,direction="forward",that=this,){
         return usm.canvasGray(that,size,direction)
     }
+    this.fcgr=function(size=2**4,direction="forward",that=this){
+        return usm.fcgr(that,size,direction)
+    }
     this.plotCanvas=function(size=200,direction="forward",that=this,){
         return usm.plotCanvas(that,size,direction)
     }
@@ -124,6 +127,17 @@ usm.canvas=function(u,size=200,direction="forward"){
     })
     //debugger
     return cv
+}
+
+usm.fcgr=function(u,size=2**4,direction="forward"){
+    let fcgr = [...Array(size)].map(_=>([...Array(size)].map(_=>0))) // FCGR
+    let xy=u[direction]
+    xy[0].forEach((_,i)=>{ // count FCGR
+        let x=Math.floor(xy[0][i]*size)
+        let y=Math.floor(xy[1][i]*size)
+        fcgr[x][y]+=1
+    })
+    return fcgr
 }
 
 usm.canvasGray=function(u,size=200,direction="forward"){
