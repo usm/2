@@ -15,7 +15,7 @@ Version 2 of <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4017330/" tar
 <hr>
 <ol>
 <li>
-    <h3>Load sequence <button style="color:green;font-size:small" id="demo">demo</button></h3
+    <h3>Load sequence <button style="color:green;font-size:small" id="demo1">demo1</button> <button style="color:green;font-size:small" id="demo2">demo2</button></h3
     <p>From url <input id="urlSequence" style="color:blue" size=50><button>Load</button></p>
     <p>Local <input id="localFile" type="file"></p>
     <p>Type/Paste<br>
@@ -63,9 +63,15 @@ Version 2 of <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4017330/" tar
         plot()
     }
 
-    demo.onclick=_=>{
+    demo1.onclick=_=>{
         location.search='https://www.ncbi.nlm.nih.gov/sviewer/viewer.fcgi?id=399923581&db=nuccore&report=fasta&extrafeat=null&conwithfeat=on&hide-cdd=on&retmode=html&withmarkup=on&tool=portal&log$=seqview'
     }
+
+    demo2.onclick=_=>{
+        textSequence.value="ATTAGCCAGGTATGGTGATGCATGCCTGTAGTCAGAGCTACTCAGGAGGCTAAGGTGGGAGGATCACCTG"
+        textSequence.onkeyup()
+    }
+
 
     showSeq = function(txt){
         usm.resolveSeq(txt).then(txt=>{
