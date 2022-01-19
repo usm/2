@@ -44,7 +44,7 @@ Version 2 of <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4017330/" tar
         //enablePlay()
     }
 
-    plot = function(size=window.innerWidth-180){
+    plot = function(size=Math.min(500,window.innerWidth-180)){
         if(u.seq!=fullSequence){
             u = new usm(fullSequence)    
         }
