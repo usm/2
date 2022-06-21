@@ -274,10 +274,91 @@ usm.plotPoints=function(u,size=200,direction="forward"){
     return sg
 }
 
+usm.plotlyPoints=function(u,direction='forward'){
+    let trace = {
+        x:u[direction][1],
+        y:u[direction][0],
+        mode: 'lines+markers',
+        type: 'scatter',
+        line:{
+            width:1,
+            color:'silver'
+        },
+        marker:{
+            color:'rgba(255,255,0,0.5)',
+            line:{
+                color:'navy',
+                width:1
+            },
+            size:10
+        },
+        showlegend: false
+    }
+    let gridTrace={
+        x:[1/4,1/4,undefined,1/2,1/2,undefined,3/4,3/4,undefined,0,1,undefined,0,1,undefined,0,1],
+        y:[0,1,undefined,0,1,undefined,0,1,undefined,1/4,1/4,undefined,1/2,1/2,undefined,3/4,3/4],
+        showlegend: false,
+        mode:'lines',
+        type:'scatter',
+        line:{
+            color:'silver',
+        }
+    }
+    let gridCross={
+        y:[1/2,1/2,undefined,0,1],
+        x:[0,1,undefined,1/2,1/2],
+        showlegend: false,
+        mode:'lines',
+        type:'scatter',
+        line:{
+            color:'gray',
+        }
+    }
+    let traces = [gridTrace,gridCross,trace]
+    let layout = {
+        title:`USM ${direction} coordinates`,
+        xaxis: {
+            range: [0, 1],
+            linecolor: 'black',
+            linewidth: 1,
+            mirror: true,
+            ticks: 'outside',
+            tick0: 0,
+            tickvals:[...Array(17)].map((_,i)=>i/16),
+            ticktext:['0','','','','1/4','','','','1/2','','','','3/4','','','','1']
+          },
+        yaxis: {
+            range: [0, 1],
+            linecolor: 'black',
+            linewidth: 1,
+            ticks: 'outside',
+            tick0: 0,
+            mirror: true,
+            tickvals:[...Array(17)].map((_,i)=>i/16),
+            ticktext:['0','','','','1/4','','','','1/2','','','','3/4','','','','1']
+        },
+        margin: {
+            pad: 0
+        },
+        //plot_bgcolor: 'rgba(0,0,0,0)',
+        //paper_bgcolor: 'rgba(0,0,0,0)',
+        width:500,
+        height:500
+    }
+    let div = document.createElement('div')
+    usm.Plotly.newPlot(div,traces,layout)
+    //debugger
+    return div
+}
+
 // --------------------//
 
 //u = new usm()
 
 if(typeof (define) != 'undefined'){
-    define(_=>usm)
+    
+    define(['https://cdn.plot.ly/plotly-2.12.1.min.js'],function(Plotly){
+        usm.Plotly=Plotly
+        return usm
+    })
 }

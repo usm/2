@@ -13,9 +13,9 @@ await loadScript("https://usm.github.io/2/usm2.js");
 await loadScript("https://cdn.plot.ly/plotly-2.12.1.min.js");
 
 
-const usm2=usm
-usm2.Plotly=Plotly
+//const usm2=usm
+usm.Plotly=Plotly
 
 export {
-    usm2
+    usm
 }
