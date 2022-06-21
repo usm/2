@@ -342,6 +342,13 @@ usm.plotlyPoints=function(u,direction='forward'){
         },
         //plot_bgcolor: 'rgba(0,0,0,0)',
         //paper_bgcolor: 'rgba(0,0,0,0)',
+        annotations:[
+            {
+                x:0.5,
+                y:0.5,
+                text:'lala'
+            }
+        ],
         width:500,
         height:500
     }
@@ -350,13 +357,16 @@ usm.plotlyPoints=function(u,direction='forward'){
     //debugger
     return div
 }
+usm.plotlyPoints3d=function(u){ // 3d plot of forward and backward coordinates
+    
+    
+}
 
 // --------------------//
 
 //u = new usm()
 
-if(typeof (define) != 'undefined'){
-    
+if(typeof (define) != 'undefined'){   
     define(['https://cdn.plot.ly/plotly-2.12.1.min.js'],function(Plotly){
         usm.Plotly=Plotly
         return usm
