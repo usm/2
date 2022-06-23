@@ -331,7 +331,7 @@ usm.plotlyPoints=function(u,size=500,direction='forward'){
             range: [0, 1],
             linecolor: 'black',
             linewidth: 1,
-            mirror: true,
+            mirror: 'all',
             ticks: 'outside',
             tick0: 0,
             tickvals:[...Array(17)].map((_,i)=>i/16),
@@ -343,7 +343,7 @@ usm.plotlyPoints=function(u,size=500,direction='forward'){
             linewidth: 1,
             ticks: 'outside',
             tick0: 0,
-            mirror: true,
+            mirror: 'all',
             tickvals:[...Array(17)].map((_,i)=>i/16),
             ticktext:['0','','','','1/4','','','','1/2','','','','3/4','','','','1']
         },
