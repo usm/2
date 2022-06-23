@@ -24,6 +24,9 @@ usm = function(seq='acggctagagctag',abc){
     this.plotPoints=function(size=200,direction="forward",that=this,){
         return usm.plotPoints(that,size,direction)
     }
+    this.plotlyPoints=function(size=500,direction="forward",that=this,){
+        return usm.plotlyPoints(that,size,direction)
+    }
     this.plot=function(size=200,direction="forward",cutoff=1000,that=this){
         if(that.seq.length<cutoff){ // vectorized sequences for smaller sequences
             return usm.plotPoints(that,size,direction)
@@ -274,7 +277,7 @@ usm.plotPoints=function(u,size=200,direction="forward"){
     return sg
 }
 
-usm.plotlyPoints=function(u,direction='forward'){
+usm.plotlyPoints=function(u,size=500,direction='forward'){
     let trace = {
         x:u[direction][1],
         y:u[direction][0],
@@ -355,8 +358,8 @@ usm.plotlyPoints=function(u,direction='forward'){
             {x:1,y:1,ax:15,ay:-15,text:'T',font:{size: 16}},
             {x:1,y:0,ax:15,ay:15,text:'C',font:{size: 16}}
         ],
-        width:500,
-        height:500
+        width:size,
+        height:size
     }
     let div = document.createElement('div')
     usm.Plotly.newPlot(div,traces,layout)
