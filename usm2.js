@@ -314,6 +314,13 @@ usm.plotlyPoints=function(u,direction='forward'){
             color:'gray',
         }
     }
+    //let edges={
+    //    x:[-0.01,0,1,1],
+    //    y:[-0.01,1,0,1],
+    //    mode:'text',
+    //    text:['A','C','G','T'],
+    //    showlegend: false
+    //}
     let traces = [gridTrace,gridCross,trace]
     let layout = {
         title:`USM ${direction} coordinates`,
@@ -343,11 +350,10 @@ usm.plotlyPoints=function(u,direction='forward'){
         //plot_bgcolor: 'rgba(0,0,0,0)',
         //paper_bgcolor: 'rgba(0,0,0,0)',
         annotations:[
-            {
-                x:0.5,
-                y:0.5,
-                text:'lala'
-            }
+            {x:0,y:0,ax:-15,ay:15,text:'A',font:{size: 16}},
+            {x:0,y:1,ax:-15,ay:-15,text:'G',font:{size: 16}},
+            {x:1,y:1,ax:15,ay:-15,text:'T',font:{size: 16}},
+            {x:1,y:0,ax:15,ay:15,text:'C',font:{size: 16}}
         ],
         width:500,
         height:500
