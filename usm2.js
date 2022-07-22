@@ -27,6 +27,12 @@ usm = function(seq='acggctagagctag',abc){
     this.plotlyPoints=function(size=500,direction="forward",that=this,){
         return usm.plotlyPoints(that,size,direction)
     }
+    this.plotlyPoints3d=function(size=500,that=this,){
+        return usm.plotlyPoints3d(that,size)
+    }
+    this.plotlyRibon=function(size=500,that=this,){
+        return usm.plotlyRibon(that,size)
+    }
     this.plot=function(size=200,direction="forward",cutoff=1000,that=this){
         if(that.seq.length<cutoff){ // vectorized sequences for smaller sequences
             return usm.plotPoints(that,size,direction)
@@ -237,6 +243,49 @@ usm.plotCanvas=function(u,size=200,direction="forward"){
     return sg
 }
 
+usm.insertMerge=function(x,x2,m=1){ //insert undefined every m values, or merge with contents of a second array
+    // try, for example:
+    // usm.insertMerge([0,1,2,3,4,5,6,7],['a','b','c','d','e','f','g','h'],2)
+    // usm.insertMerge([0,1,2,3,4,5,6,7],3)
+    // usm.insertMerge([0,1,2,3,4,5,6,7])
+    let x2Exists=(typeof(x2)!='undefined')
+    if(typeof(x2)=='number'){
+        x2Exists=false
+        m=x2
+    }
+    const n = x.length
+    let y = []
+    let i=0
+    while(i<n){
+        y=y.concat(x.slice(i,i+m))
+        if(x2Exists){
+            y=y.concat(x2.slice(i,i+m))
+        }else{
+            y.push(undefined)
+        }
+        i+=m
+    }
+    // trailing blank
+    if(typeof(y.slice(-1)[0])=='undefined'){
+        y=y.slice(0,-1)
+    }
+    /*
+    for(var i=0;i<n;i++){
+        y.push(x[i])
+        if((i%m===0)){
+            if(x2Exists){
+                for(var j=i;j-i<m;j++){
+                    y.push(x2[j])
+                }
+            }else{
+                y.push(undefined)    
+            }
+        }
+    }
+    */
+    return y
+}
+
 usm.plotPoints=function(u,size=200,direction="forward"){
     size=Math.round(size) // just in case
     let sg = u.plotCanvas(size,direction)
@@ -366,9 +415,329 @@ usm.plotlyPoints=function(u,size=500,direction='forward'){
     //debugger
     return div
 }
-usm.plotlyPoints3d=function(u){ // 3d plot of forward and backward coordinates
+usm.plotlyPoints3d=function(u,size=500){ // 3d plot of forward and backward coordinates
+    let n = u.forward[0].length
+    let traceF={
+        x:u.forward[0],
+        y:u.forward[1],
+        z:[...Array(10)].map(a=>0),
+        'name':'forward',
+        mode: 'lines+markers',
+        type: 'scatter3d',
+        marker:{
+            color:'green',
+            size:6,
+            opacity:0.5
+        },
+        line:{
+            width:0.5
+        }
+    }
+    let traceB={
+        x:u.backward[0],
+        z:u.backward[1],
+        y:[...Array(10)].map(a=>0),
+        'name':'backward',
+        mode: 'lines+markers',
+        type: 'scatter3d',
+        marker:{
+            color:'red',
+            size:6,
+            opacity:0.3
+        },
+        line:{
+            width:0.5
+        }
+    }
+    let trace3D={
+        x:u.forward[0],
+        y:u.forward[1],
+        z:u.backward[1],
+        showlegend: false,
+        mode: 'lines+markers',
+        type: 'scatter3d',
+    }
+    let trace3DF={
+        x:u.forward[0],
+        y:u.forward[1],
+        z:u.forward[1],
+        showlegend: false,
+        mode: 'lines+markers',
+        type: 'scatter3d',
+        marker:{
+           color:'green',
+           size:6,
+           opacity:1
+        }
+    }
+    let trace3DB={
+        x:u.backward[0],
+        y:u.backward[1],
+        z:u.backward[1],
+        showlegend: false,
+        mode: 'lines+markers',
+        type: 'scatter3d',
+        marker:{
+           color:'red',
+           size:6,
+           opacity:1
+        }
+    }
+    let xyz=[]
+    let rods={
+        x:usm.insertMerge(usm.insertMerge(u.forward[0],u.backward[0]),2),
+        y:usm.insertMerge(usm.insertMerge(u.forward[1],u.backward[1]),2),
+        z:usm.insertMerge(usm.insertMerge(u.forward[1],u.backward[1]),2),
+        //x:(usm.insertMerge(u.backward[0],u.forward[0])),
+        //y:(usm.insertMerge(u.backward[1],u.forward[1])),
+        //z:(usm.insertMerge(u.backward[1],u.forward[1])),
+        //z:[...Array(n*2)].map(_=>0),
+        mode:'lines+markers',
+        type: 'scatter3d',
+        marker:{
+            showlegend:false,
+            color:'blue',
+            opacity:0.2,
+            size:20
+        },
+        line:{
+            width:4,
+            opacity:0.3
+                
+        }
+    }
     
+    function sleeve(rods){
+        let x=rods.x.filter(v=>v)
+        let y=rods.y.filter(v=>v)
+        let z=rods.z.filter(v=>v)
+        return {
+            type:'mesh3d',
+            x:x,
+            y:y,
+            z:z,
+        }
+        debugger
+    }
     
+    function cube(x=0,y=0,z=0,dx=1,dy=1,dz=1,op=0.3){
+        var facecolor = [
+        	`rgba(255, 0, 0, ${op})`,
+        	`rgba(0, 255, 250, ${op})`,
+        	`rgba(0, 200, 0, 0)`,//${op})`,
+        	`rgba(200, 200, 50, 0)`,//${op})`,
+        	`rgba(230, 20, 200, 0)`,//${op})`,
+        	`rgba(255, 140, 0, 0)`,//${op})`
+        ]
+        facecolor2 = new Array(facecolor.length * 2);
+        facecolor.forEach(function(x, i) {
+        	facecolor2[i * 2 + 1] = facecolor2[i * 2] = x;
+        });
+        return {
+            type: 'mesh3d',
+            facecolor:facecolor2,
+            x:[x,x,x+dx,x+dx,x,x,x+dx,x+dx],
+            y:[y,y+dy,y+dy,y,y,y+dy,y+dy,y],
+            z:[z,z,z,z,z+dz,z+dz,z+dz,z+dz],
+            i:[7, 0, 0, 0, 4, 4, 2, 6, 4, 0, 3, 7],
+            j:[3, 4, 1, 2, 5, 6, 5, 5, 0, 1, 2, 2],
+            k:[0, 7, 2, 3, 6, 7, 1, 2, 5, 5, 7, 6]
+        }
+    }
+    let traces=[traceF,traceB,trace3DF,trace3DB,rods,cube(),sleeve(rods)] //,trace3D]
+    /*
+    for(var i=0;i<n;i++){
+        traces.push({
+            opacity:0.8,
+            color:'rgb(300,100,200)',
+            type: 'mesh3d',
+            x: [u.forward[1][i],Math.random(),Math.random()],
+            y: [Math.random(),Math.random(),Math.random()],
+            z: [Math.random(),Math.random(),Math.random()]
+        })
+    }
+    */
+    
+    let layout = {
+        title:`USM 3D`,
+        width: size,
+        height: size,
+        xaxis: {
+            range: [0, 1]
+        },
+        yaxis: {
+            range: [0, 1]
+        },
+        zaxis: {
+            range: [0, 1]
+        }
+    }
+    //let traces=[traceF,traceB,trace3DF,trace3DB,rods,cube(),sleeve(rods)] 
+    let div = document.createElement('div')
+    usm.Plotly.newPlot(div,traces,layout)
+    return div
+    
+}
+
+usm.cube=function(x=0,y=0,z=0,dx=1,dy=1,dz=1,op=0.3,
+    facecolor = [
+        `rgba(255, 0, 0, ${op})`,
+        `rgba(0, 255, 250, ${op})`,
+        `rgba(0, 200, 0, 0)`,//${op})`,
+        `rgba(200, 200, 50, 0)`,//${op})`,
+        `rgba(230, 20, 200, 0)`,//${op})`,
+        `rgba(255, 140, 0, 0)`,//${op})`
+    ]){
+    facecolor2 = new Array(facecolor.length * 2);
+    facecolor.forEach(function(x, i) {
+        facecolor2[i * 2 + 1] = facecolor2[i * 2] = x;
+    });
+    return {
+        type: 'mesh3d',
+        facecolor:facecolor2,
+        x:[x,x,x+dx,x+dx,x,x,x+dx,x+dx],
+        y:[y,y+dy,y+dy,y,y,y+dy,y+dy,y],
+        z:[z,z,z,z,z+dz,z+dz,z+dz,z+dz],
+        i:[7, 0, 0, 0, 4, 4, 2, 6, 4, 0, 3, 7],
+        j:[3, 4, 1, 2, 5, 6, 5, 5, 0, 1, 2, 2],
+        k:[0, 7, 2, 3, 6, 7, 1, 2, 5, 5, 7, 6]
+    }
+}
+
+usm.plotlyRibon=function(u,size=500){
+
+    let n = u.forward[0].length
+    let traceF={
+        x:u.forward[0],
+        y:u.forward[1],
+        z:[...Array(10)].map(a=>0),
+        'name':'forward',
+        mode: 'lines+markers',
+        type: 'scatter3d',
+        marker:{
+            color:'green',
+            size:6,
+            opacity:0.5
+        },
+        line:{
+            width:0.5
+        }
+    }
+    let traceB={
+        x:u.backward[0],
+        z:u.backward[1],
+        y:[...Array(10)].map(a=>0),
+        'name':'backward',
+        mode: 'lines+markers',
+        type: 'scatter3d',
+        marker:{
+            color:'red',
+            size:6,
+            opacity:0.3
+        },
+        line:{
+            width:0.5
+        }
+    }
+    let trace3D={
+        x:u.forward[0],
+        y:u.forward[1],
+        z:u.backward[1],
+        showlegend: false,
+        mode: 'lines+markers',
+        type: 'scatter3d',
+    }
+    let trace3DF={
+        x:u.forward[0],
+        y:u.forward[1],
+        z:u.forward[1],
+        showlegend: false,
+        mode: 'lines+markers',
+        type: 'scatter3d',
+        marker:{
+           color:'green',
+           size:6,
+           opacity:1
+        }
+    }
+    let trace3DB={
+        x:u.backward[0],
+        y:u.backward[1],
+        z:u.backward[1],
+        showlegend: false,
+        mode: 'lines+markers',
+        type: 'scatter3d',
+        marker:{
+           color:'red',
+           size:6,
+           opacity:1
+        }
+    }
+    let xyz=[]
+    let rods={
+        x:usm.insertMerge(usm.insertMerge(u.forward[0],u.backward[0]),2),
+        y:usm.insertMerge(usm.insertMerge(u.forward[1],u.backward[1]),2),
+        z:usm.insertMerge(usm.insertMerge(u.forward[1],u.backward[1]),2),
+        //x:(usm.insertMerge(u.backward[0],u.forward[0])),
+        //y:(usm.insertMerge(u.backward[1],u.forward[1])),
+        //z:(usm.insertMerge(u.backward[1],u.forward[1])),
+        //z:[...Array(n*2)].map(_=>0),
+        mode:'lines+markers',
+        type: 'scatter3d',
+        marker:{
+            showlegend:false,
+            color:'blue',
+            opacity:0.2,
+            size:20
+        },
+        line:{
+            width:4,
+            opacity:0.3
+                
+        }
+    }
+    let div = document.createElement('div')
+    function sleeve(rods){
+        let x=rods.x.filter(v=>v)
+        let y=rods.y.filter(v=>v)
+        let z=rods.z.filter(v=>v)
+        return {
+            type:'mesh3d',
+            x:x,
+            y:y,
+            z:z,
+        }
+        debugger
+    }
+    let traces=[traceF,traceB,trace3DF,trace3DB,rods,usm.cube(),sleeve(rods)]
+    let layout = {
+        title:`USM 3D`,
+        width: size,
+        height: size,
+        xaxis: {
+            range: [0, 1]
+        },
+        yaxis: {
+            range: [0, 1]
+        },
+        zaxis: {
+            range: [0, 1]
+        }
+    }
+    usm.Plotly.newPlot(div,traces,layout)
+    return div
+}
+
+usm.plotlyCompare=function(u1,u2,size=500){
+    if(typeof(u1)=='string'){
+        u1=new usm(u1)
+    }
+    if(typeof(u2)=='string'){
+        u2=new usm(u2)
+    }
+    let div = document.createElement('div')
+    //debugger
+    return div
 }
 
 // --------------------//
