@@ -425,7 +425,7 @@ usm.plotlyPoints3d=function(u,size=500){ // 3d plot of forward and backward coor
         mode: 'lines+markers',
         type: 'scatter3d',
         marker:{
-            color:'green',
+            color:'red',
             size:6,
             opacity:0.5
         },
@@ -441,7 +441,7 @@ usm.plotlyPoints3d=function(u,size=500){ // 3d plot of forward and backward coor
         mode: 'lines+markers',
         type: 'scatter3d',
         marker:{
-            color:'red',
+            color:'green',
             size:6,
             opacity:0.3
         },
@@ -465,7 +465,7 @@ usm.plotlyPoints3d=function(u,size=500){ // 3d plot of forward and backward coor
         mode: 'lines+markers',
         type: 'scatter3d',
         marker:{
-           color:'green',
+           color:'red',
            size:6,
            opacity:1
         }
@@ -478,7 +478,7 @@ usm.plotlyPoints3d=function(u,size=500){ // 3d plot of forward and backward coor
         mode: 'lines+markers',
         type: 'scatter3d',
         marker:{
-           color:'red',
+           color:'green',
            size:6,
            opacity:1
         }
@@ -615,7 +615,7 @@ usm.plotlyRibon=function(u,size=500){
         mode: 'lines+markers',
         type: 'scatter3d',
         marker:{
-            color:'green',
+            color:'red',
             size:6,
             opacity:0.5
         },
@@ -631,7 +631,7 @@ usm.plotlyRibon=function(u,size=500){
         mode: 'lines+markers',
         type: 'scatter3d',
         marker:{
-            color:'red',
+            color:'green',
             size:6,
             opacity:0.3
         },
@@ -655,7 +655,7 @@ usm.plotlyRibon=function(u,size=500){
         mode: 'lines+markers',
         type: 'scatter3d',
         marker:{
-           color:'green',
+           color:'red',
            size:6,
            opacity:1
         }
@@ -668,7 +668,7 @@ usm.plotlyRibon=function(u,size=500){
         mode: 'lines+markers',
         type: 'scatter3d',
         marker:{
-           color:'red',
+           color:'green',
            size:6,
            opacity:1
         }
