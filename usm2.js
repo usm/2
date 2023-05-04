@@ -750,3 +750,5 @@ if(typeof (define) != 'undefined'){
         return usm
     })
 }
+
+export{usm}
