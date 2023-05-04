@@ -1,6 +1,6 @@
 console.log('usm2.js loaded')
 
-usm = function(seq='acggctagagctag',abc){
+let usm = function(seq='acggctagagctag',abc){
     if(typeof(seq)=='object'){
         Object.assign(this,seq)
     }else{
